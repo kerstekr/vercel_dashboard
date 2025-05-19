@@ -5,7 +5,7 @@ const Leaderboard = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/Leadboard')
+    axios.get('https://vercel-dashboard-jfkd.onrender.com/api/Leadboard')
       .then(res => setUsers(res.data))
       .catch(err => console.error('Error fetching leaderboard:', err));
   }, []);
