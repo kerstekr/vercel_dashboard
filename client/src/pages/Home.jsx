@@ -13,7 +13,7 @@ const Home = () => {
 
   const fetchAllUsers = useCallback(async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/profile', {
+      const res = await fetch('https://vercel-dashboard-jfkd.onrender.com/api/profile', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -32,7 +32,7 @@ const Home = () => {
     if (!username.trim()) return;
 
     try {
-      const res = await fetch('http://localhost:5000/api/profile', {
+      const res = await fetch('https://vercel-dashboard-jfkd.onrender.com/api/profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ const Home = () => {
 
   const handleDelete = async (usernameToDelete) => {
     try {
-      await fetch(`http://localhost:5000/api/profile/${usernameToDelete}`, {
+      await fetch(`https://vercel-dashboard-jfkd.onrender.com/api/profile/${usernameToDelete}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -73,7 +73,7 @@ const Home = () => {
     if (!college || !department || !year) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/college/${username}`, {
+      const res = await fetch(`https://vercel-dashboard-jfkd.onrender.com/api/college/${username}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ const Home = () => {
     const skillArray = skills.split(',').map((s) => s.trim()).filter(Boolean);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/skills/${username}`, {
+      const res = await fetch(`https://vercel-dashboard-jfkd.onrender.com/api/skills/${username}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
