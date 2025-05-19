@@ -12,20 +12,20 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/profile', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setUsers(data);
+      } catch (err) {
+        console.error('Error fetching users:', err);
+      }
+    };
+
     if (token) fetchAllUsers();
   }, [token]);
-
-  const fetchAllUsers = async () => {
-    try {
-      const res = await fetch('http://localhost:5000/api/profile', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setUsers(data);
-    } catch (err) {
-      console.error('Error fetching users:', err);
-    }
-  };
 
   const handleSubmit = async () => {
     setError('');
@@ -48,6 +48,18 @@ const Home = () => {
       }
 
       setUsername('');
+      // call fetchAllUsers again - define here since previous one is inside useEffect
+      const fetchAllUsers = async () => {
+        try {
+          const res = await fetch('http://localhost:5000/api/profile', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          setUsers(data);
+        } catch (err) {
+          console.error('Error fetching users:', err);
+        }
+      };
       fetchAllUsers();
     } catch (err) {
       setError('user not found');
@@ -60,6 +72,17 @@ const Home = () => {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
+      const fetchAllUsers = async () => {
+        try {
+          const res = await fetch('http://localhost:5000/api/profile', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          setUsers(data);
+        } catch (err) {
+          console.error('Error fetching users:', err);
+        }
+      };
       fetchAllUsers();
     } catch (err) {
       console.error('Error deleting user:', err);
@@ -86,6 +109,17 @@ const Home = () => {
         setError(data.message || 'Failed to update academic info');
         return;
       }
+      const fetchAllUsers = async () => {
+        try {
+          const res = await fetch('http://localhost:5000/api/profile', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          setUsers(data);
+        } catch (err) {
+          console.error('Error fetching users:', err);
+        }
+      };
       fetchAllUsers();
     } catch (err) {
       setError('Server error: ' + err.message);
@@ -111,6 +145,17 @@ const Home = () => {
         setError(data.message || 'Failed to update skills');
         return;
       }
+      const fetchAllUsers = async () => {
+        try {
+          const res = await fetch('http://localhost:5000/api/profile', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const data = await res.json();
+          setUsers(data);
+        } catch (err) {
+          console.error('Error fetching users:', err);
+        }
+      };
       fetchAllUsers();
     } catch (err) {
       setError('Server error: ' + err.message);
@@ -129,13 +174,13 @@ const Home = () => {
     container: {
       minHeight: '100vh',
       padding: '2rem',
-      backgroundColor: '#0f1923',    // LeetCode dark/navy
+      backgroundColor: '#0f1923',
       color: '#ffffff',
       fontFamily: 'Segoe UI, Tahoma, sans-serif',
     },
     logoutBtn: {
       float: 'right',
-      backgroundColor: '#f68b1e',     // LeetCode orange
+      backgroundColor: '#f68b1e',
       color: '#0f1923',
       border: 'none',
       padding: '8px 14px',
@@ -146,7 +191,7 @@ const Home = () => {
     heading: {
       marginBottom: '1.5rem',
       fontSize: '1.8rem',
-      color: '#f68b1e',               // LeetCode orange
+      color: '#f68b1e',
     },
     leaderboardBtn: {
       backgroundColor: '#f68b1e',
