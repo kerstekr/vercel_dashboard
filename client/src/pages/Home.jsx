@@ -11,7 +11,7 @@ const Home = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // ✅ Centralized fetchAllUsers using useCallback
+  // Move fetchAllUsers outside of useEffect
   const fetchAllUsers = useCallback(async () => {
     try {
       const res = await fetch('http://localhost:5000/api/profile', {
@@ -49,7 +49,7 @@ const Home = () => {
       }
 
       setUsername('');
-      await fetchAllUsers(); // ✅ reuse
+      fetchAllUsers();
     } catch (err) {
       setError('user not found');
     }
@@ -61,7 +61,7 @@ const Home = () => {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
-      await fetchAllUsers(); // ✅ reuse
+      fetchAllUsers();
     } catch (err) {
       console.error('Error deleting user:', err);
     }
@@ -87,7 +87,7 @@ const Home = () => {
         setError(data.message || 'Failed to update academic info');
         return;
       }
-      await fetchAllUsers(); // ✅ reuse
+      fetchAllUsers();
     } catch (err) {
       setError('Server error: ' + err.message);
     }
@@ -112,7 +112,7 @@ const Home = () => {
         setError(data.message || 'Failed to update skills');
         return;
       }
-      await fetchAllUsers(); // ✅ reuse
+      fetchAllUsers();
     } catch (err) {
       setError('Server error: ' + err.message);
     }
