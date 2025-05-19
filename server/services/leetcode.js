@@ -4,8 +4,7 @@ async function fetchLeetCodeData(username) {
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: puppeteer.executablePath(), // Required for Render
-      args: ['--no-sandbox', '--disable-setuid-sandbox'] // Required for sandboxed environments like Render
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
@@ -20,7 +19,7 @@ async function fetchLeetCodeData(username) {
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
     const isProfileExist = await page.evaluate(() => {
-      return !document.querySelector('.text-xl'); 
+      return !document.querySelector('.text-xl');
     });
 
     if (!isProfileExist) {
@@ -59,7 +58,7 @@ async function fetchLeetCodeData(username) {
       ).filter(Boolean);
 
       const skills = [];
-      const allSections = document.querySelectorAll('.mt-3'); 
+      const allSections = document.querySelectorAll('.mt-3');
 
       allSections.forEach(section => {
         const title = section.querySelector('h3, h4')?.innerText.trim();
