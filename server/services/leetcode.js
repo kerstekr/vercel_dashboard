@@ -2,7 +2,12 @@ const puppeteer = require('puppeteer');
 
 async function fetchLeetCodeData(username) {
   try {
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await puppeteer.launch({
+      headless: true,
+      executablePath: puppeteer.executablePath(), // Required for Render
+      args: ['--no-sandbox', '--disable-setuid-sandbox'] // Required for sandboxed environments like Render
+    });
+
     const page = await browser.newPage();
 
     await page.setUserAgent(
@@ -14,8 +19,6 @@ async function fetchLeetCodeData(username) {
 
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
-    
-
     const isProfileExist = await page.evaluate(() => {
       return !document.querySelector('.text-xl'); 
     });
@@ -26,10 +29,8 @@ async function fetchLeetCodeData(username) {
       return null;
     }
 
-    
     await page.waitForSelector('[class*="text-[30px]"]', { timeout: 10000 });
 
-    
     await autoScroll(page);
 
     const result = await page.evaluate(() => {
@@ -44,7 +45,6 @@ async function fetchLeetCodeData(username) {
       const medium = extractSolvedCount('.text-sd-medium + div');
       const hard = extractSolvedCount('.text-sd-hard + div');
 
-      
       let rank = null;
       const rankEl = [...document.querySelectorAll('div')].find(el =>
         el.textContent.includes('Global Ranking') || el.textContent.includes('Rank')
@@ -58,7 +58,6 @@ async function fetchLeetCodeData(username) {
         img => img.alt || img.title || ''
       ).filter(Boolean);
 
-      
       const skills = [];
       const allSections = document.querySelectorAll('.mt-3'); 
 
@@ -95,7 +94,6 @@ async function fetchLeetCodeData(username) {
     return null;
   }
 }
-
 
 async function autoScroll(page) {
   await page.evaluate(async () => {
