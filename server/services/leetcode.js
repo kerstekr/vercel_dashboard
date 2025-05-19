@@ -3,10 +3,11 @@ const chromium = require('@sparticuz/chromium');
 
 async function fetchLeetCodeData(username) {
   const browser = await puppeteer.launch({
-    args: chromium.args,
+    args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'],
     executablePath: await chromium.executablePath(),
     headless: chromium.headless,
-    defaultViewport: chromium.defaultViewport
+    defaultViewport: chromium.defaultViewport,
+    ignoreHTTPSErrors: true,
   });
 
   const page = await browser.newPage();
@@ -15,7 +16,7 @@ async function fetchLeetCodeData(username) {
   );
 
   const url = `https://leetcode.com/${username}`;
-  await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+  await page.goto(url, { waitUntil: 'networkidle2', timeout: 80000 });
 
   const data = await page.evaluate(() => {
     const extractText = (selector) =>
