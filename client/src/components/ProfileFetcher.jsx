@@ -9,7 +9,7 @@ function ProfileFetcher() {
     setError('');
     setProfile(null);
     try {
-      const res = await fetch(`http://localhost:5000/api/profile/${username}`);
+      const res = await fetch(`https://vercel-dashboard-jfkd.onrender.com/api/profile/${username}`);
       if (!res.ok) {
         throw new Error('Profile not found or server error');
       }
