@@ -34,4 +34,5 @@ async function fetchLeetCodeData(username) {
   return data;
 }
 
-module.exports = fetchLeetCodeData;
+
+module.exports = { fetchLeetCodeData };
