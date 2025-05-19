@@ -22,17 +22,16 @@ async function fetchLeetCodeData(username) {
       document.querySelector(selector)?.innerText || 'N/A';
 
     return {
-      totalSolved: extractText('.text-[24px]'),
+      totalSolved: extractText('.text-\\[24px\\]'),
       easySolved: extractText('div:nth-of-type(1) .text-label-2.dark\\:text-dark-label-2'),
       mediumSolved: extractText('div:nth-of-type(2) .text-label-2.dark\\:text-dark-label-2'),
       hardSolved: extractText('div:nth-of-type(3) .text-label-2.dark\\:text-dark-label-2'),
-      ranking: extractText('.ranking .text-[20px]')
+      ranking: extractText('.ranking .text-\\[20px\\]')
     };
   });
 
   await browser.close();
   return data;
 }
-
 
 module.exports = { fetchLeetCodeData };
