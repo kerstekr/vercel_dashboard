@@ -11,7 +11,6 @@ const Home = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Move fetchAllUsers outside of useEffect
   const fetchAllUsers = useCallback(async () => {
     try {
       const res = await fetch('http://localhost:5000/api/profile', {
@@ -51,7 +50,7 @@ const Home = () => {
       setUsername('');
       fetchAllUsers();
     } catch (err) {
-      setError('user not found');
+      setError('User not found');
     }
   };
 
@@ -96,7 +95,7 @@ const Home = () => {
   const handleAddSkill = async (username) => {
     const skills = prompt(`Enter skills for ${username} (comma separated):`);
     if (!skills) return;
-    const skillArray = skills.split(',').map(s => s.trim()).filter(Boolean);
+    const skillArray = skills.split(',').map((s) => s.trim()).filter(Boolean);
 
     try {
       const res = await fetch(`http://localhost:5000/api/skills/${username}`, {
