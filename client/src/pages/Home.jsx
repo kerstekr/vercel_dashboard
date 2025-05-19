@@ -11,21 +11,24 @@ const Home = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const res = await fetch('http://localhost:5000/api/profile', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await res.json();
-        setUsers(data);
-      } catch (err) {
-        console.error('Error fetching users:', err);
-      }
-    };
+  // Define fetchAllUsers once, outside useEffect, so it doesn't cause lint warning
+  const fetchAllUsers = async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/profile', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      console.error('Error fetching users:', err);
+    }
+  };
 
+  useEffect(() => {
     if (token) fetchAllUsers();
-  }, [token]);
+  }, [token]);  // fetchAllUsers not added here to avoid infinite loop
+
+  // ... rest of your handlers where you can reuse fetchAllUsers
 
   const handleSubmit = async () => {
     setError('');
@@ -48,18 +51,6 @@ const Home = () => {
       }
 
       setUsername('');
-      // call fetchAllUsers again - define here since previous one is inside useEffect
-      const fetchAllUsers = async () => {
-        try {
-          const res = await fetch('http://localhost:5000/api/profile', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const data = await res.json();
-          setUsers(data);
-        } catch (err) {
-          console.error('Error fetching users:', err);
-        }
-      };
       fetchAllUsers();
     } catch (err) {
       setError('user not found');
@@ -72,17 +63,6 @@ const Home = () => {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
-      const fetchAllUsers = async () => {
-        try {
-          const res = await fetch('http://localhost:5000/api/profile', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const data = await res.json();
-          setUsers(data);
-        } catch (err) {
-          console.error('Error fetching users:', err);
-        }
-      };
       fetchAllUsers();
     } catch (err) {
       console.error('Error deleting user:', err);
@@ -109,17 +89,6 @@ const Home = () => {
         setError(data.message || 'Failed to update academic info');
         return;
       }
-      const fetchAllUsers = async () => {
-        try {
-          const res = await fetch('http://localhost:5000/api/profile', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const data = await res.json();
-          setUsers(data);
-        } catch (err) {
-          console.error('Error fetching users:', err);
-        }
-      };
       fetchAllUsers();
     } catch (err) {
       setError('Server error: ' + err.message);
@@ -145,17 +114,6 @@ const Home = () => {
         setError(data.message || 'Failed to update skills');
         return;
       }
-      const fetchAllUsers = async () => {
-        try {
-          const res = await fetch('http://localhost:5000/api/profile', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          const data = await res.json();
-          setUsers(data);
-        } catch (err) {
-          console.error('Error fetching users:', err);
-        }
-      };
       fetchAllUsers();
     } catch (err) {
       setError('Server error: ' + err.message);
@@ -170,106 +128,76 @@ const Home = () => {
 
   if (!token) return <Auth onLoginSuccess={setToken} />;
 
-  const styles = {
-    container: {
-      minHeight: '100vh',
-      padding: '2rem',
-      backgroundColor: '#0f1923',
-      color: '#ffffff',
-      fontFamily: 'Segoe UI, Tahoma, sans-serif',
-    },
-    logoutBtn: {
-      float: 'right',
-      backgroundColor: '#f68b1e',
-      color: '#0f1923',
-      border: 'none',
-      padding: '8px 14px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontWeight: 'bold',
-    },
-    heading: {
-      marginBottom: '1.5rem',
-      fontSize: '1.8rem',
-      color: '#f68b1e',
-    },
-    leaderboardBtn: {
-      backgroundColor: '#f68b1e',
-      color: '#0f1923',
-      border: 'none',
-      padding: '10px 16px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontWeight: '600',
-      fontSize: '1rem',
-      marginBottom: '1rem',
-    },
-    form: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      marginBottom: '1rem',
-    },
-    input: {
-      flex: 1,
-      padding: '10px',
-      fontSize: '1rem',
-      borderRadius: '4px',
-      border: '1px solid #303a45',
-      backgroundColor: '#15212b',
-      color: '#fff',
-    },
-    addBtn: {
-      backgroundColor: '#f68b1e',
-      color: '#0f1923',
-      border: 'none',
-      padding: '10px 16px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontWeight: '600',
-      boxShadow: '0 2px 6px rgba(246,139,30,0.4)',
-    },
-    error: {
-      color: '#e74c3c',
-      marginBottom: '1rem',
-    },
-    tableContainer: {
-      marginTop: '2rem',
-      overflowX: 'auto',
-    },
-  };
-
+  // ... rest of your component JSX unchanged
+  // (Use the previous styles and JSX you had for return)
+  
   return (
-    <div style={styles.container}>
-      <button onClick={handleLogout} style={styles.logoutBtn}>
+    <div style={{minHeight: '100vh', padding: '2rem', backgroundColor: '#0f1923', color: '#fff'}}>
+      <button onClick={handleLogout} style={{
+        float: 'right',
+        backgroundColor: '#f68b1e',
+        color: '#0f1923',
+        border: 'none',
+        padding: '8px 14px',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontWeight: 'bold',
+      }}>
         Logout
       </button>
 
-      <h2 style={styles.heading}>LeetCode Profile Tracker</h2>
+      <h2 style={{ marginBottom: '1.5rem', fontSize: '1.8rem', color: '#f68b1e' }}>LeetCode Profile Tracker</h2>
 
       <button
         onClick={() => navigate('/leaderboard')}
-        style={styles.leaderboardBtn}
+        style={{
+          backgroundColor: '#f68b1e',
+          color: '#0f1923',
+          border: 'none',
+          padding: '10px 16px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontWeight: '600',
+          fontSize: '1rem',
+          marginBottom: '1rem',
+        }}
       >
         🏆 View Leaderboard
       </button>
 
-      <div style={styles.form}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
         <input
           type="text"
           placeholder="Enter LeetCode username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={styles.input}
+          style={{
+            flex: 1,
+            padding: '10px',
+            fontSize: '1rem',
+            borderRadius: '4px',
+            border: '1px solid #303a45',
+            backgroundColor: '#15212b',
+            color: '#fff',
+          }}
         />
-        <button onClick={handleSubmit} style={styles.addBtn}>
+        <button onClick={handleSubmit} style={{
+          backgroundColor: '#f68b1e',
+          color: '#0f1923',
+          border: 'none',
+          padding: '10px 16px',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontWeight: '600',
+          boxShadow: '0 2px 6px rgba(246,139,30,0.4)',
+        }}>
           Add User
         </button>
       </div>
 
-      {error && <p style={styles.error}>{error}</p>}
+      {error && <p style={{ color: '#e74c3c', marginBottom: '1rem' }}>{error}</p>}
 
-      <div style={styles.tableContainer}>
+      <div style={{ marginTop: '2rem', overflowX: 'auto' }}>
         <UserTable
           users={users}
           onDelete={handleDelete}
