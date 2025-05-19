@@ -2,34 +2,34 @@ const puppeteer = require('puppeteer');
 
 async function fetchLeetCodeData(username) {
   try {
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-
+    const browser = await puppeteer.launch({ headless: 'new' });
     const page = await browser.newPage();
 
     await page.setUserAgent(
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
     );
 
-    const url = `https://leetcode.com/${username}`;
-    console.log(`Checking account for: ${username}`);
+    const url = https://leetcode.com/${username};
+    console.log(Checking account for: ${username});
 
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
+    
+
     const isProfileExist = await page.evaluate(() => {
-      return !document.querySelector('.text-xl');
+      return !document.querySelector('.text-xl'); 
     });
 
     if (!isProfileExist) {
-      console.log(`❌ Account ${username} does not exist.`);
+      console.log(❌ Account ${username} does not exist.);
       await browser.close();
       return null;
     }
 
+    
     await page.waitForSelector('[class*="text-[30px]"]', { timeout: 10000 });
 
+    
     await autoScroll(page);
 
     const result = await page.evaluate(() => {
@@ -44,6 +44,7 @@ async function fetchLeetCodeData(username) {
       const medium = extractSolvedCount('.text-sd-medium + div');
       const hard = extractSolvedCount('.text-sd-hard + div');
 
+      
       let rank = null;
       const rankEl = [...document.querySelectorAll('div')].find(el =>
         el.textContent.includes('Global Ranking') || el.textContent.includes('Rank')
@@ -57,8 +58,9 @@ async function fetchLeetCodeData(username) {
         img => img.alt || img.title || ''
       ).filter(Boolean);
 
+      
       const skills = [];
-      const allSections = document.querySelectorAll('.mt-3');
+      const allSections = document.querySelectorAll('.mt-3'); 
 
       allSections.forEach(section => {
         const title = section.querySelector('h3, h4')?.innerText.trim();
@@ -81,11 +83,11 @@ async function fetchLeetCodeData(username) {
 
     await browser.close();
 
-    console.log(`✅ Account ${username} exists. Solved: ${result.totalSolved}`);
-    console.log(`🔹 Easy: ${result.easy}, Medium: ${result.medium}, Hard: ${result.hard}`);
-    console.log(`🏅 Rank: ${result.rank}`);
-    console.log(`🎖️ Badges: ${result.badges.join(', ')}`);
-    console.log(`🛠 Skills:`, result.skills);
+    console.log(✅ Account ${username} exists. Solved: ${result.totalSolved});
+    console.log(🔹 Easy: ${result.easy}, Medium: ${result.medium}, Hard: ${result.hard});
+    console.log(🏅 Rank: ${result.rank});
+    console.log(🎖️ Badges: ${result.badges.join(', ')});
+    console.log(🛠 Skills:, result.skills);
 
     return result;
   } catch (error) {
@@ -93,6 +95,7 @@ async function fetchLeetCodeData(username) {
     return null;
   }
 }
+
 
 async function autoScroll(page) {
   await page.evaluate(async () => {
